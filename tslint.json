@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "member-access": false,
+    "trailing-comma": false,
+    "interface-name": false,
+    "strict-export-declare-modifiers": false
+  }
+}
