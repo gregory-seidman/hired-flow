@@ -1,0 +1,41 @@
+import { JobStatus, EliminatedReason } from "./enums";
+
+export interface JobSearchConfig {
+    id?: string;
+    name: string;
+    fieldNames: { [field: string]: string };
+    fieldOrder: string[];
+}
+
+export interface JobSearchClient {
+    config: JobSearchConfig;
+    saveConfig: () => Promise<void>;
+    loadJobs: () => Promise<Job[]>;
+    saveJob: (job: Job) => Promise<void>;
+}
+
+export interface Interaction {
+    id?: string;
+    description: string;
+    date: Date;
+    notes?: string;
+}
+
+export interface Contact {
+    name: string;
+    email?: string;
+    phone?: string;
+    recruitingAgency?: string;
+}
+
+export interface Job {
+    id?: string;
+    company: string;
+    jobTitle: string;
+    status: JobStatus;
+    eliminatedReason?: EliminatedReason;
+    contact: Contact;
+    interactions: Interaction[];
+    details: { [field: string]: string };
+    notes?: string;
+}

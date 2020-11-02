@@ -7,6 +7,7 @@ import App from './App';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './state/store';
+import { loadJobSearches } from './persist/client';
 
 render(
     <React.StrictMode>
@@ -17,3 +18,4 @@ render(
     document.getElementById('root')
 );
 
+loadJobSearches().then(console.log);
