@@ -1,6 +1,7 @@
 import { ActionType } from "../../enums";
 import { ConfigsState } from "../ReduxState";
-import { BaseAction, ConfigsLoadedAction } from "../actions";
+import { BaseAction, ConfigsLoadedAction, ConfigSelectedAction } from "../actions";
+import { dispatchSelectedConfig } from '../dispatchers/configsDispatchers';
 
 const baseState: ConfigsState = {
     loaded: false,
@@ -22,10 +23,18 @@ export default function configsReducer(
                 jobs: []
             };
             if (newState.configs.length === 1) {
-                newState.configIndex = 0;
+                dispatchSelectedConfig(0);
             }
-            return newState;
-        default:
-            return state;
+            break;
+        case ActionType.ConfigSelected:
+            const { configIndex } = action as ConfigSelectedAction;
+            newState = {
+                ...state,
+                configIndex
+            };
+            newState.configs[configIndex].loadJobs()
+                .then(console.log); //TODO
+            break;
     }
+    return newState;
 }

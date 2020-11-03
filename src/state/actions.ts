@@ -9,3 +9,7 @@ export interface BaseAction extends Action<ActionType> {
 export interface ConfigsLoadedAction extends BaseAction {
     configs: JobSearchClient[];
 }
+
+export interface ConfigSelectedAction extends BaseAction {
+    configIndex: number;
+}
