@@ -56,6 +56,16 @@ export default function dataReducer(
                     .then(j => dispatchLoadedJobs(configId, j));
             }
             break;
+        case ActionType.ConfigCreated:
+            const cfgCreatedAction: ConfigCreatedAction = action;
+            const { config } = cfgCreatedAction;
+            newState = {
+                configsLoaded: true,
+                jobs: [],
+                configs: [ ...state.configs, config ]
+            };
+            dispatchSelectedConfig(state.configs.length);
+            break;
         case ActionType.JobsLoaded:
             const jobsAction: JobsLoadedAction = action;
             const { jobs, searchId } = jobsAction;

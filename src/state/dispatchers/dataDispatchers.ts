@@ -19,6 +19,14 @@ export function dispatchSelectedConfig(configIndex: number): void {
     dispatch(action);
 }
 
+export function dispatchCreatedConfig(config: JobSearchClient): void {
+    const action: ConfigCreatedAction = {
+        type: ActionType.ConfigCreated,
+        config
+    };
+    dispatch(action);
+}
+
 export function dispatchLoadedJobs(searchId: string, jobs: Job[]): void {
     const action: JobsLoadedAction = {
         type: ActionType.JobsLoaded,
