@@ -16,6 +16,8 @@ export enum EliminatedReason {
 }
 
 export enum ActionType {
+    JobSelected = "JobSelected",
+    JobsLoaded = "JobsLoaded",
     ConfigSelected = "ConfigSelected",
     ConfigsLoaded = "ConfigsLoaded"
 }

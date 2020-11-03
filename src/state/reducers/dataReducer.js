@@ -1,13 +1,26 @@
 import { ActionType } from "../../enums";
 import { DataState } from "../ReduxState";
-import { BaseAction, ConfigsLoadedAction, ConfigSelectedAction } from "../actions";
-import { dispatchSelectedConfig } from '../dispatchers/dataDispatchers';
+import {
+    BaseAction,
+    ConfigsLoadedAction,
+    ConfigSelectedAction
+} from "../actions";
+import {
+    dispatchSelectedConfig,
+    dispatchLoadedJobs
+} from '../dispatchers/dataDispatchers';
 
 const baseState: DataState = {
-    loaded: false,
+    configsLoaded: false,
+    jobsLoaded: false,
     configs: [],
     jobs: []
 };
+
+function curId(state: DataState) {
+    const { configs, configIndex } = state;
+    return configs[configIndex].config.id;
+}
 
 export default function dataReducer(
     state: DataState = baseState,
@@ -18,7 +31,8 @@ export default function dataReducer(
         case ActionType.ConfigsLoaded:
             const configsAction: ConfigsLoadedAction = action;
             newState = {
-                loaded: true,
+                configsLoaded: true,
+                jobsLoaded: false,
                 configs: configsAction.configs,
                 jobs: []
             };
@@ -27,14 +41,43 @@ export default function dataReducer(
             }
             break;
         case ActionType.ConfigSelected:
-            const selectedAction: ConfigSelectedAction = action;
-            const { configIndex } = selectedAction;
-            newState = {
-                ...state,
-                configIndex
-            };
-            newState.configs[configIndex].loadJobs()
-                .then(console.log); //TODO
+            const cfgSelectAction: ConfigSelectedAction = action;
+            const { configIndex } = cfgSelectAction;
+            if (configIndex !== state.configIndex) {
+                newState = {
+                    ...state,
+                    jobsLoaded: false,
+                    jobs: [],
+                    configIndex
+                };
+                delete newState.jobIndex;
+                const configId = curId(newState);
+                newState.configs[configIndex].loadJobs()
+                    .then(j => dispatchLoadedJobs(configId, j));
+            }
+            break;
+        case ActionType.JobsLoaded:
+            const jobsAction: JobsLoadedAction = action;
+            const { jobs, searchId } = jobsAction;
+            if (searchId === curId(state)) {
+                newState = {
+                    ...state,
+                    jobsLoaded: true,
+                    jobs
+                };
+                delete newState.jobIndex;
+            }
+            break;
+        case ActionType.JobSelected:
+            const jobSelectAction: JobSelectedAction = action;
+            const { jobIndex } = jobSelectAction;
+            if (jobIndex !== state.jobIndex) {
+                newState = {
+                    ...state,
+                    jobIndex
+                };
+                if (jobIndex < 0) delete newState.jobIndex;
+            }
             break;
         default:
             break;

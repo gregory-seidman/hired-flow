@@ -2,10 +2,12 @@ import { Job } from "../models";
 import { JobSearchClient } from "../models";
 
 export interface DataState {
-    loaded: boolean;
-    configIndex?: number;
     configs: JobSearchClient[];
+    configsLoaded: boolean;
+    configIndex?: number;
     jobs: Job[];
+    jobsLoaded: boolean;
+    jobIndex?: number;
 }
 
 export default interface ReduxState {

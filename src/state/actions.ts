@@ -13,3 +13,12 @@ export interface ConfigsLoadedAction extends BaseAction {
 export interface ConfigSelectedAction extends BaseAction {
     configIndex: number;
 }
+
+export interface JobsLoadedAction extends BaseAction {
+    searchId: string;
+    jobs: Job[];
+}
+
+export interface JobSelectedAction extends BaseAction {
+    jobIndex: number;
+}
