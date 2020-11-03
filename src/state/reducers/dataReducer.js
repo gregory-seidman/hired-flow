@@ -1,22 +1,22 @@
 import { ActionType } from "../../enums";
-import { ConfigsState } from "../ReduxState";
+import { DataState } from "../ReduxState";
 import { BaseAction, ConfigsLoadedAction, ConfigSelectedAction } from "../actions";
 import { dispatchSelectedConfig } from '../dispatchers/configsDispatchers';
 
-const baseState: ConfigsState = {
+const baseState: DataState = {
     loaded: false,
     configs: [],
     jobs: []
 };
 
-export default function configsReducer(
-    state: ConfigsState = baseState,
+export default function dataReducer(
+    state: DataState = baseState,
     action: BaseAction
-): ConfigsState {
-    let newState: ConfigsState = state;
+): DataState {
+    let newState: DataState = state;
     switch (action.type) {
         case ActionType.ConfigsLoaded:
-            const configsAction = action as ConfigsLoadedAction;
+            const configsAction: ConfigsLoadedAction = action;
             newState = {
                 loaded: true,
                 configs: configsAction.configs,
@@ -27,13 +27,16 @@ export default function configsReducer(
             }
             break;
         case ActionType.ConfigSelected:
-            const { configIndex } = action as ConfigSelectedAction;
+            const selectedAction: ConfigSelectedAction = action;
+            const { configIndex } = selectedAction;
             newState = {
                 ...state,
                 configIndex
             };
             newState.configs[configIndex].loadJobs()
                 .then(console.log); //TODO
+            break;
+        default:
             break;
     }
     return newState;

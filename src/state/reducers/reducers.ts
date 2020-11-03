@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import ReduxState from "../ReduxState";
 import { BaseAction } from "../actions";
-import configsReducer from "./configsReducer";
+import dataReducer from "./dataReducer";
 
 const reducers = combineReducers<ReduxState, BaseAction>({
     //TODO
-    configs: configsReducer
+    data: dataReducer
 });
 
 export default reducers;

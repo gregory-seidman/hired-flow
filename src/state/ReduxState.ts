@@ -1,7 +1,7 @@
 import { Job } from "../models";
 import { JobSearchClient } from "../models";
 
-export interface ConfigsState {
+export interface DataState {
     loaded: boolean;
     configIndex?: number;
     configs: JobSearchClient[];
@@ -9,6 +9,6 @@ export interface ConfigsState {
 }
 
 export default interface ReduxState {
-    configs: ConfigsState;
+    data: DataState;
     //TODO
 }
