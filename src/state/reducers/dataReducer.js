@@ -1,7 +1,7 @@
 import { ActionType } from "../../enums";
 import { DataState } from "../ReduxState";
 import { BaseAction, ConfigsLoadedAction, ConfigSelectedAction } from "../actions";
-import { dispatchSelectedConfig } from '../dispatchers/configsDispatchers';
+import { dispatchSelectedConfig } from '../dispatchers/dataDispatchers';
 
 const baseState: DataState = {
     loaded: false,

@@ -8,7 +8,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './state/store';
 import { loadJobSearches } from './persist/client';
-import { dispatchLoadedConfigs } from './state/dispatchers/configsDispatchers';
+import { dispatchLoadedConfigs } from './state/dispatchers/dataDispatchers';
 
 render(
     <React.StrictMode>
