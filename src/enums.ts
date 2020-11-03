@@ -16,5 +16,5 @@ export enum EliminatedReason {
 }
 
 export enum ActionType {
-    NOOP = "NOOP"
+    ConfigsLoaded = "ConfigsLoaded"
 }
