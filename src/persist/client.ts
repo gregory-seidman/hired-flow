@@ -33,7 +33,7 @@ enum ObjType {
 }
 
 function keyFor(searchId: string, type: ObjType, id?: string): string {
-    return id ? `{searchId}:{type}:{id}` : `{searchId}:{type}`;
+    return id ? `${searchId}:${type}:${id}` : `${searchId}:${type}`;
 }
 
 const configListKey = "JobSearch:ConfigIds";
@@ -57,7 +57,7 @@ function loadJobSearch(searchId: string): JobSearchClient {
     if (storage.hasOwnProperty(key)) {
         return createClient(JSON.parse(storage[key]));
     } else {
-        throw new Error(`Config not found: '{searchId}'`);
+        throw new Error(`Config not found: '${searchId}'`);
     }
 }
 
@@ -91,7 +91,7 @@ function loadJob(searchId: string, id: string): Job {
     if (storage.hasOwnProperty(key)) {
         return JSON.parse(storage[key]);
     } else {
-        throw new Error(`Job not found: '{searchId}:{id}'`);
+        throw new Error(`Job not found: '${searchId}:${id}'`);
     }
 }
 

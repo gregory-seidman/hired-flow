@@ -3,12 +3,16 @@ import { DataState } from "../ReduxState";
 import {
     BaseAction,
     ConfigsLoadedAction,
-    ConfigSelectedAction
+    ConfigSelectedAction,
+    ConfigCreatedAction,
+    JobsLoadedAction,
+    JobSelectedAction
 } from "../actions";
 import {
     dispatchSelectedConfig,
     dispatchLoadedJobs
 } from '../dispatchers/dataDispatchers';
+import { JobSearchClient } from "../../models";
 
 const baseState: DataState = {
     configsLoaded: false,
@@ -17,9 +21,9 @@ const baseState: DataState = {
     jobs: []
 };
 
-function curId(state: DataState) {
+function curId(state: DataState): string {
     const { configs, configIndex } = state;
-    return configs[configIndex].config.id;
+    return configs[configIndex!].config.id!;
 }
 
 export default function dataReducer(
@@ -29,7 +33,7 @@ export default function dataReducer(
     let newState: DataState = state;
     switch (action.type) {
         case ActionType.ConfigsLoaded:
-            const configsAction: ConfigsLoadedAction = action;
+            const configsAction = action as ConfigsLoadedAction;
             newState = {
                 configsLoaded: true,
                 jobsLoaded: false,
@@ -41,7 +45,7 @@ export default function dataReducer(
             }
             break;
         case ActionType.ConfigSelected:
-            const cfgSelectAction: ConfigSelectedAction = action;
+            const cfgSelectAction = action as ConfigSelectedAction;
             const { configIndex } = cfgSelectAction;
             if (configIndex !== state.configIndex) {
                 newState = {
@@ -57,17 +61,18 @@ export default function dataReducer(
             }
             break;
         case ActionType.ConfigCreated:
-            const cfgCreatedAction: ConfigCreatedAction = action;
+            const cfgCreatedAction = action as ConfigCreatedAction;
             const { config } = cfgCreatedAction;
             newState = {
                 configsLoaded: true,
+                jobsLoaded: false,
                 jobs: [],
                 configs: [ ...state.configs, config ]
             };
             dispatchSelectedConfig(state.configs.length);
             break;
         case ActionType.JobsLoaded:
-            const jobsAction: JobsLoadedAction = action;
+            const jobsAction = action as JobsLoadedAction;
             const { jobs, searchId } = jobsAction;
             if (searchId === curId(state)) {
                 newState = {
@@ -79,7 +84,7 @@ export default function dataReducer(
             }
             break;
         case ActionType.JobSelected:
-            const jobSelectAction: JobSelectedAction = action;
+            const jobSelectAction = action as JobSelectedAction;
             const { jobIndex } = jobSelectAction;
             if (jobIndex !== state.jobIndex) {
                 newState = {

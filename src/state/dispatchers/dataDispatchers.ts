@@ -1,5 +1,11 @@
 import { ActionType } from "../../enums";
-import { ConfigsLoadedAction, ConfigSelectedAction } from "../actions";
+import {
+    ConfigsLoadedAction,
+    ConfigSelectedAction,
+    ConfigCreatedAction,
+    JobsLoadedAction,
+    JobSelectedAction
+} from "../actions";
 import { dispatch } from "../store";
 import { Job, JobSearchClient } from "../../models";
 
