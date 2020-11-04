@@ -3,6 +3,7 @@ import { JobStatus, EliminatedReason } from "./enums";
 export interface JobSearchConfig {
     id?: string;
     name: string;
+    createdAt: string;
     fieldNames: { [field: string]: string };
     fieldOrder: string[];
 }

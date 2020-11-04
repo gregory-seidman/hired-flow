@@ -26,6 +26,13 @@ function curId(state: DataState): string {
     return configs[configIndex!].config.id!;
 }
 
+function compareConfigClients(a: JobSearchClient, b: JobSearchClient) {
+    const aDate: string = a.config.createdAt;
+    const bDate: string = b.config.createdAt;
+    return (aDate === bDate) ? 0 :
+        ((aDate < bDate) ? 1 : -1);
+}
+
 export default function dataReducer(
     state: DataState = baseState,
     action: BaseAction
@@ -37,10 +44,11 @@ export default function dataReducer(
             newState = {
                 configsLoaded: true,
                 jobsLoaded: false,
-                configs: configsAction.configs,
+                configs: [ ...configsAction.configs ],
                 jobs: []
             };
-            if (newState.configs.length === 1) {
+            if (newState.configs.length > 0) {
+                newState.configs.sort(compareConfigClients);
                 dispatchSelectedConfig(0);
             }
             break;

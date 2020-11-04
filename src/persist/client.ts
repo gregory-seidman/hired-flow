@@ -120,6 +120,7 @@ export async function loadJobSearches(): Promise<JobSearchClient[]> {
 export function createJobSearch(name: string): JobSearchClient {
     const config: JobSearchConfig = {
         name,
+        createdAt: JSON.stringify(new Date()),
         fieldOrder: [
             "company",
             "jobTitle",
