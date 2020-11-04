@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import ReduxState from "./state/ReduxState";
+import NewJobSearchDialog from "./components/NewJobSearchDialog";
 
-export interface AppPropsType {
+interface InputPropsType {
 }
 
 enum AppState {
@@ -17,7 +18,7 @@ interface MappedPropsType {
     name: string|undefined;
 }
 
-type Mapper = (state: ReduxState, props: AppPropsType) => MappedPropsType;
+type Mapper = (state: ReduxState, props: InputPropsType) => MappedPropsType;
 
 const mapStateAndProps: Mapper = (state, props) => {
     const { configsLoaded, configs, configIndex } = state.data;
@@ -39,17 +40,22 @@ const mapStateAndProps: Mapper = (state, props) => {
     };
 };
 
-const App: React.FC<MappedPropsType> = ({ appState, name }) => {
+const ComponentFunc: React.FC<MappedPropsType> = ({ appState, name }) => {
     switch (appState) {
         case AppState.AwaitingConfigsLoading:
             return <h1>Loading Job Searches...</h1>;
         case AppState.NoConfigsYet:
-            return <h1>Create First Job Search</h1>;
+            return <NewJobSearchDialog open={true} />;
         case AppState.AwaitingConfigSelection:
             return <h1>Select Job Search</h1>;
         case AppState.Displaying:
-            return <h1>Job Search: {name}</h1>;
+            return (
+                <React.Fragment>
+                    <h1>Job Search: {name}</h1>
+                </React.Fragment>
+            );
     }
 }
 
-export default connect(mapStateAndProps)(App);
+export type AppPropsType = InputPropsType;
+export default connect(mapStateAndProps)(ComponentFunc);
