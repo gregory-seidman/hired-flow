@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ReduxState from "./state/ReduxState";
 import NewJobSearchDialog from "./components/NewJobSearchDialog";
+import JobSearch from "./components/JobSearch";
 
 interface InputPropsType {
 }
@@ -51,7 +52,8 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ appState, name }) => {
         case AppState.Displaying:
             return (
                 <React.Fragment>
-                    <h1>Job Search: {name}</h1>
+                    <h1 style={{ textAlign: "center" }}>Job Search: {name}</h1>
+                    <JobSearch />
                 </React.Fragment>
             );
     }

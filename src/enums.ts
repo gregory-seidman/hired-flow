@@ -2,7 +2,7 @@ export enum JobStatus {
     Applied = "Applied",
     Screening = "Screening",
     Interviewing = "Interviewing",
-    AwaitingOffer = "AwaitingOffer",
+    AwaitingOffer = "Awaiting Offer",
     Paused = "Paused",
     Offered = "Offered",
     Eliminated = "Eliminated"

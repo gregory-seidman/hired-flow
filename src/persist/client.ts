@@ -124,26 +124,20 @@ export function createJobSearch(name: string): JobSearchClient {
         fieldOrder: [
             "company",
             "jobTitle",
-            "contact.name",
-            "synthetic:lastInteractionDate",
-            "synthetic:nextInteractionDate",
+            "contact",
+            "_lastInteractionDate",
+            "_nextInteractionDate",
             "details.workLocation",
             "details.techStack",
             "details.healthInsurance",
             "details.401k",
-            "synthetic:status"
+            "status"
         ],
         fieldNames: {
-            "company": "Company",
-            "jobTitle": "Position",
-            "contact.name": "Point of Contact",
-            "synthetic:lastInteractionDate": "Last Contact",
-            "synthetic:nextInteractionDate": "Expected Contact",
             "details.workLocation": "Location",
             "details.techStack": "Tech Stack",
             "details.healthInsurance": "Health Insurance",
             "details.401k": "401(k)",
-            "synthetic:status": "Status"
         }
     };
     return createClient(config);

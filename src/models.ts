@@ -30,7 +30,7 @@ export interface Contact {
 }
 
 export interface Job {
-    id?: string;
+    id: string;
     company: string;
     jobTitle: string;
     status: JobStatus;
