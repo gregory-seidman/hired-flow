@@ -1,5 +1,5 @@
 import { RowData, CellValue } from "@material-ui/data-grid";
-import { JobStatus } from "../enums";
+import { JobStatus, InteractionStatus } from "../enums";
 import { Job, Interaction } from "../models";
 import { columnDefs } from "./columnBuilder";
 
@@ -36,10 +36,11 @@ function getLastInteraction(interactions: Interaction[]): Date|null {
     const now: Date = justYesterday();
     const mostRecent: Date = interactions.reduce(
         (latest,interaction) => {
-            const { date } = interaction;
-            return (date > now) ? latest : (
-                (date > latest) ? date : latest
-            );
+            const { date, status } = interaction;
+            return ((status !== InteractionStatus.Occurred) ||
+                    (date > now)) ?
+                latest :
+                ((date > latest) ? date : latest);
         },
         guard
     );
@@ -51,10 +52,11 @@ function getNextInteraction(interactions: Interaction[]): Date|null {
     const now: Date = justYesterday();
     const immediateNext: Date = interactions.reduce(
         (nearest,interaction) => {
-            const { date } = interaction;
-            return (date < now) ? nearest : (
-                (date < nearest) ? date : nearest
-            );
+            const { date, status } = interaction;
+            return ((status !== InteractionStatus.Upcoming) ||
+                    (date < now)) ?
+                nearest :
+                ((date < nearest) ? date : nearest);
         },
         guard
     );

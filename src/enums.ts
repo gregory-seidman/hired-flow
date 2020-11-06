@@ -15,6 +15,15 @@ export enum EliminatedReason {
     SeeNotes = "See notes"
 }
 
+export enum InteractionStatus {
+    Occurred = "Occurred",
+    Upcoming = "Upcoming",
+    Missed = "Missed",
+    Rescheduled = "Rescheduled",
+    Cancelled = "Cancelled",
+    SeeNotes = "See notes"
+}
+
 export enum ActionType {
     JobSelected = "JobSelected",
     JobsLoaded = "JobsLoaded",

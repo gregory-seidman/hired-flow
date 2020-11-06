@@ -1,4 +1,4 @@
-import { JobStatus, EliminatedReason } from "./enums";
+import { JobStatus, InteractionStatus, EliminatedReason } from "./enums";
 
 export interface JobSearchConfig {
     id?: string;
@@ -19,6 +19,7 @@ export interface Interaction {
     id?: string;
     description: string;
     date: Date;
+    status: InteractionStatus;
     notes?: string;
 }
 
