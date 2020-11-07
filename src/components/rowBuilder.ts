@@ -2,6 +2,11 @@ import { RowData, CellValue } from "@material-ui/data-grid";
 import { JobStatus, InteractionStatus } from "../enums";
 import { Job, Interaction } from "../models";
 import { columnDefs } from "./columnBuilder";
+import Datestamp, {
+    endOfTime,
+    startOfTime,
+    justYesterday
+} from "../utils/Datestamp";
 
 type JobFieldExtractor = (job: Job) => CellValue;
 
@@ -14,27 +19,10 @@ function makeDetailsExtractor(field: string): JobFieldExtractor {
     return (job: Job) => job.details[subfield];
 }
 
-const endOfTime: Date = new Date(9999, 12);
-const startOfTime: Date = new Date(0, 1);
-
-function justYesterday(): Date {
-    const now: Date = new Date();
-    const pastMidnight: number = (
-        now.getMilliseconds() + 1000 * (
-            now.getSeconds() + 60 * (
-                now.getMinutes() + 60 * (
-                    now.getHours()
-                )
-            )
-        )
-    );
-    return new Date(now.valueOf() - (pastMidnight + 1));
-}
-
-function getLastInteraction(interactions: Interaction[]): Date|null {
-    const guard: Date = startOfTime;
-    const now: Date = justYesterday();
-    const mostRecent: Date = interactions.reduce(
+function getLastInteraction(interactions: Interaction[]): Datestamp|null {
+    const guard: Datestamp = startOfTime;
+    const now: Datestamp = justYesterday();
+    const mostRecent: Datestamp = interactions.reduce(
         (latest,interaction) => {
             const { date, status } = interaction;
             return ((status !== InteractionStatus.Occurred) ||
@@ -47,10 +35,10 @@ function getLastInteraction(interactions: Interaction[]): Date|null {
     return (mostRecent === guard) ? null : mostRecent;
 }
 
-function getNextInteraction(interactions: Interaction[]): Date|null {
-    const guard: Date = endOfTime;
-    const now: Date = justYesterday();
-    const immediateNext: Date = interactions.reduce(
+function getNextInteraction(interactions: Interaction[]): Datestamp|null {
+    const guard: Datestamp = endOfTime;
+    const now: Datestamp = justYesterday();
+    const immediateNext: Datestamp = interactions.reduce(
         (nearest,interaction) => {
             const { date, status } = interaction;
             return ((status !== InteractionStatus.Upcoming) ||
