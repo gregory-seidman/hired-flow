@@ -1,9 +1,10 @@
 import { JobStatus, InteractionStatus, EliminatedReason } from "./enums";
+import { Datestamp } from "./utils/Datestamp";
 
 export interface JobSearchConfig {
     id?: string;
     name: string;
-    createdAt: string;
+    createdAt: Datestamp;
     fieldNames: { [field: string]: string };
     fieldOrder: string[];
 }
@@ -18,7 +19,7 @@ export interface JobSearchClient {
 export interface Interaction {
     id?: string;
     description: string;
-    date: Date;
+    date: Datestamp;
     status: InteractionStatus;
     notes?: string;
 }

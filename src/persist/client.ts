@@ -1,4 +1,6 @@
 import { JobSearchConfig, JobSearchClient, Job } from "../models";
+import { Datestamp, today } from "../utils/Datestamp";
+import parseJsonWithDatestamp from "../utils/parseJsonWithDatestamp";
 
 const storage = window.localStorage;
 
@@ -55,7 +57,7 @@ function createClient(config: JobSearchConfig): JobSearchClient {
 function loadJobSearch(searchId: string): JobSearchClient {
     const key = keyFor(searchId, ObjType.Config);
     if (storage.hasOwnProperty(key)) {
-        return createClient(JSON.parse(storage[key]));
+        return createClient(parseJsonWithDatestamp(storage[key]));
     } else {
         throw new Error(`Config not found: '${searchId}'`);
     }
@@ -85,11 +87,10 @@ function saveJobsList(searchId: string, ids: string[]): void {
     storage[key] = JSON.stringify(ids);
 }
 
-
 function loadJob(searchId: string, id: string): Job {
     const key = keyFor(searchId, ObjType.Job, id);
     if (storage.hasOwnProperty(key)) {
-        return JSON.parse(storage[key]);
+        return parseJsonWithDatestamp(storage[key]);
     } else {
         throw new Error(`Job not found: '${searchId}:${id}'`);
     }
@@ -120,7 +121,7 @@ export async function loadJobSearches(): Promise<JobSearchClient[]> {
 export function createJobSearch(name: string): JobSearchClient {
     const config: JobSearchConfig = {
         name,
-        createdAt: JSON.stringify(new Date()),
+        createdAt: today(),
         fieldOrder: [
             "company",
             "jobTitle",

@@ -2,7 +2,8 @@ import { RowData, CellValue } from "@material-ui/data-grid";
 import { JobStatus, InteractionStatus } from "../enums";
 import { Job, Interaction } from "../models";
 import { columnDefs } from "./columnBuilder";
-import Datestamp, {
+import {
+    Datestamp,
     endOfTime,
     startOfTime,
     justYesterday

@@ -1,5 +1,6 @@
 import { ActionType } from "../../enums";
 import { DataState } from "../ReduxState";
+import { Datestamp, compareDatestamps } from "../../utils/Datestamp";
 import {
     BaseAction,
     ConfigsLoadedAction,
@@ -27,10 +28,9 @@ function curId(state: DataState): string {
 }
 
 function compareConfigClients(a: JobSearchClient, b: JobSearchClient) {
-    const aDate: string = a.config.createdAt;
-    const bDate: string = b.config.createdAt;
-    return (aDate === bDate) ? 0 :
-        ((aDate < bDate) ? 1 : -1);
+    const aDate: Datestamp = a.config.createdAt;
+    const bDate: Datestamp = b.config.createdAt;
+    return compareDatestamps(bDate, aDate);
 }
 
 export default function dataReducer(
