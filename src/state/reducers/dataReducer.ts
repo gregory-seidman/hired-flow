@@ -1,36 +1,31 @@
 import { ActionType } from "../../enums";
-import { DataState } from "../ReduxState";
-import { Datestamp, compareDatestamps } from "../../utils/Datestamp";
+import { DataState, JobSearchIdentifiersById } from "../ReduxState";
 import {
     BaseAction,
     ConfigsLoadedAction,
     ConfigSelectedAction,
     ConfigCreatedAction,
-    JobsLoadedAction,
+    JobSearchLoadedAction,
     JobSelectedAction
 } from "../actions";
 import {
     dispatchSelectedConfig,
-    dispatchLoadedJobs
+    dispatchLoadedJobSearch
 } from '../dispatchers/dataDispatchers';
-import { JobSearchClient } from "../../models";
+import { JobSearch, JobSearchIdentifier } from "../../models";
+import { createClient } from "../../persist";
 
 const baseState: DataState = {
     configsLoaded: false,
-    jobsLoaded: false,
-    configs: [],
-    jobs: []
+    jobSearchLoaded: false,
+    selectedJobSearchId: "",
+    selectedJobId: "",
+    configs: {}
 };
 
 function curId(state: DataState): string {
-    const { configs, configIndex } = state;
-    return configs[configIndex!].config.id!;
-}
-
-function compareConfigClients(a: JobSearchClient, b: JobSearchClient) {
-    const aDate: Datestamp = a.config.createdAt;
-    const bDate: Datestamp = b.config.createdAt;
-    return compareDatestamps(bDate, aDate);
+    const { jobSearch, selectedJobSearchId } = state;
+    return jobSearch?.id || selectedJobSearchId;
 }
 
 export default function dataReducer(
@@ -43,63 +38,71 @@ export default function dataReducer(
             const configsAction = action as ConfigsLoadedAction;
             newState = {
                 configsLoaded: true,
-                jobsLoaded: false,
-                configs: [ ...configsAction.configs ],
-                jobs: []
+                jobSearchLoaded: false,
+                selectedJobSearchId: "",
+                selectedJobId: "",
+                configs: configsAction.configs.reduce(
+                    (byId: JobSearchIdentifiersById, jobSearch: JobSearchIdentifier) => {
+                        byId[jobSearch.id] = jobSearch;
+                        return byId;
+                    }, {}
+                )
             };
-            if (newState.configs.length > 0) {
-                newState.configs.sort(compareConfigClients);
-                dispatchSelectedConfig(0);
+            if (configsAction.configs.length > 0) {
+                dispatchSelectedConfig(configsAction.configs[0].id);
             }
             break;
         case ActionType.ConfigSelected:
             const cfgSelectAction = action as ConfigSelectedAction;
-            const { configIndex } = cfgSelectAction;
-            if (configIndex !== state.configIndex) {
+            const { jobSearchId } = cfgSelectAction;
+            if (jobSearchId !== state.selectedJobSearchId) {
                 newState = {
                     ...state,
-                    jobsLoaded: false,
-                    jobs: [],
-                    configIndex
+                    jobSearchLoaded: false,
+                    client: createClient(jobSearchId),
+                    selectedJobSearchId: jobSearchId,
+                    selectedJobId: ""
                 };
-                delete newState.jobIndex;
                 const configId = curId(newState);
-                newState.configs[configIndex].loadJobs()
-                    .then(j => dispatchLoadedJobs(configId, j));
+                newState.client!.loadJobSearch()
+                    .then((j: JobSearch) => dispatchLoadedJobSearch(configId, j));
             }
             break;
         case ActionType.ConfigCreated:
             const cfgCreatedAction = action as ConfigCreatedAction;
-            const { config } = cfgCreatedAction;
+            const { newJobSearch } = cfgCreatedAction;
             newState = {
+                configs: {
+                    ...state.configs,
+                    [newJobSearch.id]: newJobSearch
+                },
+                selectedJobSearchId: "",
+                selectedJobId: "",
                 configsLoaded: true,
-                jobsLoaded: false,
-                jobs: [],
-                configs: [ ...state.configs, config ]
+                jobSearchLoaded: false,
+                jobSearch: newJobSearch
             };
-            dispatchSelectedConfig(state.configs.length);
+            dispatchSelectedConfig(newJobSearch.id);
             break;
-        case ActionType.JobsLoaded:
-            const jobsAction = action as JobsLoadedAction;
-            const { jobs, searchId } = jobsAction;
+        case ActionType.JobSearchLoaded:
+            const jobsAction = action as JobSearchLoadedAction;
+            const { jobSearch, searchId } = jobsAction;
             if (searchId === curId(state)) {
                 newState = {
                     ...state,
-                    jobsLoaded: true,
-                    jobs
+                    jobSearchLoaded: true,
+                    jobSearch
                 };
-                delete newState.jobIndex;
             }
             break;
         case ActionType.JobSelected:
             const jobSelectAction = action as JobSelectedAction;
-            const { jobIndex } = jobSelectAction;
-            if (jobIndex !== state.jobIndex) {
+            const { jobId } = jobSelectAction;
+            if (jobId !== state.selectedJobId) {
                 newState = {
                     ...state,
-                    jobIndex
+                    selectedJobId: jobId
                 };
-                if (jobIndex < 0) delete newState.jobIndex;
             }
             break;
         default:

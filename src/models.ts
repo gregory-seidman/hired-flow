@@ -1,10 +1,17 @@
 import { JobStatus, InteractionStatus, EliminatedReason } from "./enums";
-import { Datestamp } from "./utils/Datestamp";
+import { Datestamp, compareDatestamps } from "./utils/Datestamp";
 
 export interface JobSearchIdentifier {
     id: string;
     name: string;
     createdAt: Datestamp;
+}
+
+export function compareJobSearchIdentifiers(
+    a: JobSearchIdentifier,
+    b: JobSearchIdentifier
+) {
+    return compareDatestamps(a.createdAt, b.createdAt);
 }
 
 export type NamedFields = { [field: string]: string };

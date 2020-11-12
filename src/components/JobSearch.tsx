@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ReduxState from "../state/ReduxState";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { DataGrid, ColDef, RowsProp } from "@material-ui/data-grid";
-import { Job, JobSearchClient } from "../models";
+import { Job, JobSearch } from "../models";
 import rowBuilder from "./rowBuilder";
 import columnBuilder from "./columnBuilder";
 
@@ -11,8 +11,8 @@ interface InputPropsType {
 }
 
 interface MappedPropsType {
-    jobsLoaded: boolean;
-    config: JobSearchClient;
+    configsLoaded: boolean;
+    jobSearch: JobSearch;
     jobs: Job[];
     currentJob?: Job;
 }
@@ -28,20 +28,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 type Mapper = (state: ReduxState, props: InputPropsType) => MappedPropsType;
 
 const mapStateAndProps: Mapper = (state, props) => {
-    const { configs, configIndex, jobs, jobIndex, jobsLoaded } = state.data;
+    const { jobSearch, configsLoaded, selectedJobId } = state.data;
     const mappedProps: MappedPropsType = {
-        jobsLoaded,
-        config: configs[configIndex!],
-        jobs: jobs,
+        configsLoaded,
+        jobSearch: jobSearch!,
+        jobs: Object.values(jobSearch!.jobs),
     };
-    if (state.data.hasOwnProperty("jobIndex") && (jobIndex! > 0)) {
-        mappedProps.currentJob = jobs[jobIndex!];
+    if (selectedJobId) {
+        mappedProps.currentJob = jobSearch!.jobs[selectedJobId];
     }
     return mappedProps;
 }
 
-const ComponentFunc: React.FC<MappedPropsType> = ({ jobsLoaded, config, jobs, currentJob }) => {
-    const { fieldNames, fieldOrder } = config.config;
+const ComponentFunc: React.FC<MappedPropsType> = ({ configsLoaded: jobsLoaded, jobSearch, jobs, currentJob }) => {
+    const { fieldNames, fieldOrder } = jobSearch;
     const classes = useStyles();
     const columns: ColDef[] = fieldOrder.map(columnBuilder(fieldNames));
     const rows: RowsProp = jobs.map(rowBuilder(fieldOrder));

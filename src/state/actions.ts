@@ -1,28 +1,28 @@
 import { Action } from "redux";
 import { ActionType } from "../enums";
-import { JobSearchClient, Job } from "../models";
+import { JobSearch, JobSearchIdentifier } from "../models";
 
 export interface BaseAction extends Action<ActionType> {
     type: ActionType;
 }
 
 export interface ConfigsLoadedAction extends BaseAction {
-    configs: JobSearchClient[];
+    configs: JobSearchIdentifier[];
 }
 
 export interface ConfigSelectedAction extends BaseAction {
-    configIndex: number;
+    jobSearchId: string;
 }
 
 export interface ConfigCreatedAction extends BaseAction {
-    config: JobSearchClient
+    newJobSearch: JobSearch
 }
 
-export interface JobsLoadedAction extends BaseAction {
+export interface JobSearchLoadedAction extends BaseAction {
     searchId: string;
-    jobs: Job[];
+    jobSearch: JobSearch;
 }
 
 export interface JobSelectedAction extends BaseAction {
-    jobIndex: number;
+    jobId: string;
 }

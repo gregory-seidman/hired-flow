@@ -3,13 +3,13 @@ import {
     ConfigsLoadedAction,
     ConfigSelectedAction,
     ConfigCreatedAction,
-    JobsLoadedAction,
+    JobSearchLoadedAction,
     JobSelectedAction
 } from "../actions";
 import { dispatch } from "../store";
-import { Job, JobSearchClient } from "../../models";
+import { JobSearch, JobSearchIdentifier } from "../../models";
 
-export function dispatchLoadedConfigs(configs: JobSearchClient[]): void {
+export function dispatchLoadedConfigs(configs: JobSearchIdentifier[]): void {
     const action: ConfigsLoadedAction = {
         type: ActionType.ConfigsLoaded,
         configs
@@ -17,35 +17,38 @@ export function dispatchLoadedConfigs(configs: JobSearchClient[]): void {
     dispatch(action);
 }
 
-export function dispatchSelectedConfig(configIndex: number): void {
+export function dispatchSelectedConfig(jobSearchId: string): void {
     const action: ConfigSelectedAction = {
         type: ActionType.ConfigSelected,
-        configIndex
+        jobSearchId
     };
     dispatch(action);
 }
 
-export function dispatchCreatedConfig(config: JobSearchClient): void {
+export function dispatchCreatedConfig(newJobSearch: JobSearch): void {
     const action: ConfigCreatedAction = {
         type: ActionType.ConfigCreated,
-        config
+        newJobSearch
     };
     dispatch(action);
 }
 
-export function dispatchLoadedJobs(searchId: string, jobs: Job[]): void {
-    const action: JobsLoadedAction = {
-        type: ActionType.JobsLoaded,
+export function dispatchLoadedJobSearch(
+    searchId: string,
+    jobSearch: JobSearch
+): void {
+    const action: JobSearchLoadedAction = {
+        type: ActionType.JobSearchLoaded,
         searchId,
-        jobs
+        jobSearch
     };
     dispatch(action);
 }
 
-export function dispatchSelectedJob(jobIndex: number): void {
+export function dispatchSelectedJob(jobId: string): void {
     const action: JobSelectedAction = {
         type: ActionType.JobSelected,
-        jobIndex
+        jobId
     };
     dispatch(action);
 }

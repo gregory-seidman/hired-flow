@@ -7,7 +7,7 @@ import App from './App';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './state/store';
-import { loadJobSearches } from './persist/client';
+import { loadJobSearches } from './persist';
 import { dispatchLoadedConfigs } from './state/dispatchers/dataDispatchers';
 
 render(

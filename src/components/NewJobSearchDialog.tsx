@@ -5,8 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import { createJobSearch } from "../persist/client";
 import { dispatchCreatedConfig } from "../state/dispatchers/dataDispatchers";
+import { createJobSearch, saveJobSearch } from "../persist";
 
 interface InputPropsType {
     closeDialog?: () => void;
@@ -20,9 +20,9 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ closeDialog, open }) => {
         undefined : () => closeDialog;
     const [name, setName] = React.useState("");
     const onCreate = () => {
-        const config = createJobSearch(name);
-        config.saveConfig()
-            .then(() => dispatchCreatedConfig(config));
+        const jobSearch = createJobSearch(name);
+        saveJobSearch(jobSearch)
+            .then(() => dispatchCreatedConfig(jobSearch));
     };
     return (
         <Dialog open={open} onClose={onClose}>

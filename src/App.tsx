@@ -22,18 +22,18 @@ interface MappedPropsType {
 type Mapper = (state: ReduxState, props: InputPropsType) => MappedPropsType;
 
 const mapStateAndProps: Mapper = (state, props) => {
-    const { configsLoaded, configs, configIndex } = state.data;
+    const { configsLoaded, configs, jobSearch, client } = state.data;
     let appState: AppState = AppState.Displaying;
     let name: string|undefined;
 
     if (!configsLoaded) {
         appState = AppState.AwaitingConfigsLoading;
-    } else if (configs.length === 0) {
+    } else if (Object.keys(configs).length === 0) {
         appState = AppState.NoConfigsYet;
-    } else if (typeof(configIndex) !== "number") {
+    } else if (!(jobSearch && client)) {
         appState = AppState.AwaitingConfigSelection;
     } else {
-        name = configs[configIndex].config.name;
+        name = jobSearch.name;
     }
     return {
         appState,

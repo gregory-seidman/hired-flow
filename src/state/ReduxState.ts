@@ -1,13 +1,16 @@
-import { Job } from "../models";
-import { JobSearchClient } from "../models";
+import { JobSearch, JobSearchClient, JobSearchIdentifier } from "../models";
 
+export type JobSearchIdentifiersById = {
+    [id: string]: JobSearchIdentifier
+}
 export interface DataState {
-    configs: JobSearchClient[];
+    configs: JobSearchIdentifiersById;
+    selectedJobSearchId: string;
+    selectedJobId: string;
+    jobSearch?: JobSearch;
+    client?: JobSearchClient;
     configsLoaded: boolean;
-    configIndex?: number;
-    jobs: Job[];
-    jobsLoaded: boolean;
-    jobIndex?: number;
+    jobSearchLoaded: boolean;
 }
 
 export default interface ReduxState {

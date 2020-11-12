@@ -59,9 +59,9 @@ interface JobFieldMapper {
 
 const syntheticFieldExtractors: { [fieldName: string]: JobFieldExtractor } = {
     "_lastInteractionDate": (job: Job) =>
-        getLastInteraction(job.interactions),
+        getLastInteraction(Object.values(job.interactions)),
     "_nextInteractionDate": (job: Job) =>
-        getNextInteraction(job.interactions),
+        getNextInteraction(Object.values(job.interactions)),
     "status": (job: Job) => {
         const { status, eliminatedReason } = job;
         return (status === JobStatus.Eliminated) ?

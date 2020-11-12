@@ -26,7 +26,7 @@ export enum InteractionStatus {
 
 export enum ActionType {
     JobSelected = "JobSelected",
-    JobsLoaded = "JobsLoaded",
+    JobSearchLoaded = "JobSearchLoaded",
     ConfigCreated = "ConfigCreated",
     ConfigSelected = "ConfigSelected",
     ConfigsLoaded = "ConfigsLoaded"
