@@ -6,7 +6,8 @@ import {
     ConfigSelectedAction,
     ConfigCreatedAction,
     JobSearchLoadedAction,
-    JobSelectedAction
+    JobSelectedAction,
+    JobSavedAction,
 } from "../actions";
 import {
     dispatchSelectedConfig,
@@ -64,6 +65,7 @@ export default function dataReducer(
                     selectedJobId: ""
                 };
                 const configId = curId(newState);
+                //FIXME: catch
                 newState.client!.loadJobSearch()
                     .then((j: JobSearch) => dispatchLoadedJobSearch(configId, j));
             }
@@ -103,6 +105,29 @@ export default function dataReducer(
                     ...state,
                     selectedJobId: jobId
                 };
+            }
+            break;
+        case ActionType.JobSaved:
+            const jobSaveAction = action as JobSavedAction;
+            const { job } = jobSaveAction;
+            if (state.jobSearch && (job.jobSearchId === state.jobSearch!.id)) {
+                newState = {
+                    ...state,
+                    jobSearch: {
+                        ...state.jobSearch,
+                        jobs: {
+                            ...state.jobSearch.jobs,
+                            [job.id]: job
+                        }
+                    }
+                };
+                if (!state.jobSearch!.jobs.hasOwnProperty(job.id)) {
+                    //FIXME: catch
+                    state.client!.saveConfig(state.jobSearch!);
+                }
+                if (state.selectedJobId === job.id) {
+                    newState.selectedJobId = "";
+                }
             }
             break;
         default:

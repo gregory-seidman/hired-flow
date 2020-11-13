@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import { ActionType } from "../enums";
-import { JobSearch, JobSearchIdentifier } from "../models";
+import { Job, JobSearch, JobSearchIdentifier } from "../models";
 
 export interface BaseAction extends Action<ActionType> {
     type: ActionType;
@@ -26,3 +26,8 @@ export interface JobSearchLoadedAction extends BaseAction {
 export interface JobSelectedAction extends BaseAction {
     jobId: string;
 }
+
+export interface JobSavedAction extends BaseAction {
+    job: Job;
+}
+

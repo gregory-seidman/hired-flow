@@ -4,10 +4,11 @@ import {
     ConfigSelectedAction,
     ConfigCreatedAction,
     JobSearchLoadedAction,
-    JobSelectedAction
+    JobSelectedAction,
+    JobSavedAction,
 } from "../actions";
 import { dispatch } from "../store";
-import { JobSearch, JobSearchIdentifier } from "../../models";
+import { Job, JobSearch, JobSearchIdentifier } from "../../models";
 
 export function dispatchLoadedConfigs(configs: JobSearchIdentifier[]): void {
     const action: ConfigsLoadedAction = {
@@ -49,6 +50,14 @@ export function dispatchSelectedJob(jobId: string): void {
     const action: JobSelectedAction = {
         type: ActionType.JobSelected,
         jobId
+    };
+    dispatch(action);
+}
+
+export function dispatchSavedJob(job: Job): void {
+    const action: JobSavedAction = {
+        type: ActionType.JobSaved,
+        job
     };
     dispatch(action);
 }
