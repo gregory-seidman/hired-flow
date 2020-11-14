@@ -2,12 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import ReduxState from "../state/ReduxState";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { DataGrid, ColDef, RowsProp } from "@material-ui/data-grid";
+import { ColDef, RowsProp } from "@material-ui/data-grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { Job, JobSearch } from "../models";
 import rowBuilder from "./rowBuilder";
 import columnBuilder from "./columnBuilder";
+import TableGrid from "./TableGrid";
 import EditJobDialog from "./EditJobDialog";
 
 interface InputPropsType {
@@ -52,7 +53,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
     return (
         <React.Fragment>
             <div className={classes.gridWrapper}>
-                <DataGrid
+                <TableGrid
                     rows={rows}
                     columns={columns}
                 />

@@ -49,7 +49,7 @@ export const columnDefs: { [fieldName: string]: ColDef } = {
         headerName: "Point of Contact",
         sortable: false,
         renderCell: (params: CellParams) =>
-            <ContactCell {...(params.getValue("contact") as Contact)} />
+            <ContactCell {...(params.value as Contact)} />
     },
     "status": {
         field: "status",
