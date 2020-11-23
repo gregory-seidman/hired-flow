@@ -123,7 +123,7 @@ export default function dataReducer(
                 };
                 if (!state.jobSearch!.jobs.hasOwnProperty(job.id)) {
                     //FIXME: catch
-                    state.client!.saveConfig(state.jobSearch!);
+                    state.client!.saveConfig(newState.jobSearch!);
                 }
                 if (state.selectedJobId === job.id) {
                     newState.selectedJobId = "";
