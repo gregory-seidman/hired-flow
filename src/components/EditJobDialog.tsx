@@ -124,7 +124,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ closeDialog, disableCancel, 
     const classes = useStyles();
     return (
         <Dialog open={open} onClose={disableCancel ? undefined : onClose}>
-            <DialogTitle>{job.id ? "Edit" : "New"} Job</DialogTitle>
+            <DialogTitle>{job.id ? "Edit" : "New"} Job (all fields optional)</DialogTitle>
             <DialogContent>
                 <TextField
                     onChange={evt => setCompany(evt.target.value)}
