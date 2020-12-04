@@ -10,14 +10,48 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import orderBy, { Comparator, ItemKey } from "../utils/orderBy";
 
+export interface ColumnButtonDef {
+    field: string;
+    context?: unknown;
+    onClick: ((row: RowData, context: unknown) => void) | ((row: RowData) => void);
+    button: React.ReactNode;
+}
+export type ColumnButtonDefs = ColumnButtonDef[];
+
 interface InputPropsType {
     rows: RowsProp;
     columns: Columns;
+    buttons?: ColumnButtonDefs;
 }
 
 type MappedPropsType = InputPropsType;
 
 const useStyles = makeStyles((theme: Theme) => ({
+    hoverParent: {
+        "& td": {
+            position: "relative"
+        },
+        "& .hover-show": {
+            display: "none"
+        },
+        "&:hover": {
+            "& .hover-show": {
+                opacity: 1,
+                textAlign: "center",
+                display: "block",
+                position: "absolute",
+                width: "100%",
+                top: "16px",
+                left: 0
+            },
+            "& .hover-hide": {
+                display: "none"
+            },
+            "& .hover-fade": {
+                opacity: 0.4
+            }
+        }
+    },
     sortableHeader: {
         cursor: "pointer"
     },
@@ -30,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type ClickEvent = React.MouseEvent<HTMLTableDataCellElement, MouseEvent>;
 type ClickHandler = (evt: ClickEvent) => void;
 
-function makeOnClick(
+function makeOnClickHeader(
     column: ColDef,
     sortColumns: SortColumns,
     setSortColumns: (value: SortColumns) => void
@@ -81,7 +115,7 @@ const ColumnHeader: React.FC<ColumnProps> = ({ column, sortColumns, setSortColum
     }
     const index = sortColumns.findIndex(({ field }) =>
                                         (field === column.field));
-    const onClick = makeOnClick(column, sortColumns, setSortColumns);
+    const onClick = makeOnClickHeader(column, sortColumns, setSortColumns);
     return (
         <TableCell className={classes.sortableHeader} onClick={onClick}>
             {column.headerName} {(index >= 0) && (
@@ -113,9 +147,39 @@ function sortBy(rows: RowsProp, sortColumns: SortColumns): RowsProp {
     return orderBy(rows, itemKey, compare);
 }
 
-const ComponentFunc: React.FC<MappedPropsType> = ({ rows, columns }) => {
+const ColumnButton: React.FC<{row: RowData, def: ColumnButtonDef}> =
+    ({ row, def }) =>
+        <span onClick={() => def.onClick(row, def.context)}>{def.button}</span>;
+
+type CellParamsPlusButtons = CellParams & {
+    buttons?: ColumnButtonDef[] | undefined;
+}
+
+const BasicCellContent: React.FC<CellParamsPlusButtons> = ({ value, data, buttons }) => (
+    <React.Fragment>
+        <span className="hover-fade">{
+            value
+        }</span><span className="hover-show">{
+            buttons?.map((def, i) =>
+                <ColumnButton key={i} row={data} def={def} />)
+        }</span>
+    </React.Fragment>
+);
+
+const ComponentFunc: React.FC<MappedPropsType> = ({ rows, columns, buttons }) => {
+    const classes = useStyles();
     const [ sortColumns, setSortColumns ] = React.useState<SortColumns>([]);
     const sortedRows = sortBy(rows, sortColumns);
+    const columnButtons = buttons?.reduce(
+        (map: { [key: string]: ColumnButtonDef[] }, def: ColumnButtonDef) => {
+            if (!map.hasOwnProperty(def.field)) {
+                map[def.field] = [];
+            }
+            map[def.field].push(def);
+            return map;
+        },
+        {}
+        ) ?? {};
 
     return (
         <TableContainer component={Paper}>
@@ -134,28 +198,26 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ rows, columns }) => {
                 </TableHead>
                 <TableBody>
                     { sortedRows.map((row: RowData) => (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.id} className={classes.hoverParent}>
                             { columns.map(c => {
-                                let cellValue = row[c.field];
-                                if (c.hasOwnProperty("renderCell")) {
-                                    const rowModel: RowModel = {
-                                        id: row.id,
-                                        data: row,
-                                        selected: false
-                                    };
-                                    const params: CellParams = {
-                                        value: cellValue,
-                                        field: c.field,
-                                        getValue: f => row[f],
-                                        data: row,
-                                        rowModel,
-                                        colDef: c,
-                                        api: null
-                                    };
-                                    cellValue = c.renderCell!(params);
-                                }
+                                const rowModel: RowModel = {
+                                    id: row.id,
+                                    data: row,
+                                    selected: false
+                                };
+                                const params: CellParamsPlusButtons = {
+                                    value: row[c.field],
+                                    field: c.field,
+                                    getValue: f => row[f],
+                                    data: row,
+                                    rowModel,
+                                    colDef: c,
+                                    api: null,
+                                    buttons: columnButtons[c.field]
+                                };
+                                const cellValue = (c.renderCell || BasicCellContent)(params);
                                 return (
-                                    <TableCell key={`${row.id}:${c.field}`}>{cellValue}</TableCell>
+                                    <TableCell key={c.field}>{cellValue}</TableCell>
                                 );
                             }) }
                         </TableRow>
