@@ -1,22 +1,7 @@
 import React from "react";
 import { ColDef, CellParams } from "@material-ui/data-grid";
 import { Contact } from "../models";
-
-// https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
-function textWidth(text: string) {
-    const div = document.createElement("div");
-    div.className = "MuiDataGrid-root MuiDataGrid-colCell";
-    div.style.whiteSpace = "no-wrap";
-    div.style.left = "-1000px";
-    div.style.top = "-1000px";
-    div.style.visibility = "hidden";
-    div.style.position = "absolute";
-    div.innerText = "XXXX" + text;
-    document.body.appendChild(div);
-    const width = div.clientWidth;
-    document.body.removeChild(div);
-    return width;
-}
+import textWidth from "../utils/textWidth";
 
 const ContactCell: React.FC<Contact> =
     ({ name, email, phone, recruitingAgency }) => (
