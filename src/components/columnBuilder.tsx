@@ -2,6 +2,7 @@ import React from "react";
 import { ColDef, CellParams } from "@material-ui/data-grid";
 import { Contact } from "../models";
 import textWidth from "../utils/textWidth";
+import StatusCell from "./StatusCell";
 
 const ContactCell: React.FC<Contact> =
     ({ name, email, phone, recruitingAgency }) => (
@@ -39,6 +40,7 @@ export const columnDefs: { [fieldName: string]: ColDef } = {
     "status": {
         field: "status",
         headerName: "Status",
+        renderCell: (params: CellParams) => <StatusCell {...params} />,
         sortable: true
     },
     "_lastInteractionDate": {
