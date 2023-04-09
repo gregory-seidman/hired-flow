@@ -46,6 +46,7 @@ const mapStateAndProps: Mapper = (state, props) => {
 type OnSelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
 const ComponentFunc: React.FC<MappedPropsType> = ({ client, job, status }) => {
     const [ loading, setLoading ] = React.useState(false);
+    const [ focused, setFocused ] = React.useState(false);
     const classes = useStyles();
     if (!(job && client)) return <span>{status}</span>;
     const onChange = (evt: OnSelectChangeEvent) => {
@@ -53,6 +54,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ client, job, status }) => {
             ...job,
             status: evt.target.value as JobStatus
         };
+        setFocused(false);
         setLoading(true);
         client.saveJob(newJob)
             .then(() => dispatchSavedJob(newJob))
@@ -60,8 +62,17 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ client, job, status }) => {
     };
     return loading ? <CircularProgress /> : (
         <div className={classes.statusCell} style={{ width: textWidth(status) }}>
-                <span className="hover-hide">{status}</span>
-                <select className="hover-show" onChange={onChange} value={status}>
+                <span
+                    style={focused ? { display: "none" } : {}}
+                    className="hover-hide"
+                    >{status}</span>
+                <select
+                    style={focused ? { display: "block" } : {}}
+                    className="hover-show"
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    onChange={onChange}
+                    value={status}>
                 {Object.values(JobStatus).map(v => <option key={v} value={v}>{v}</option>)}
                 </select>
             </div>

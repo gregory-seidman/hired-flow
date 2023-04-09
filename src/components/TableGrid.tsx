@@ -32,17 +32,17 @@ const useStyles = makeStyles((theme: Theme) => ({
             position: "relative"
         },
         "& .hover-show": {
-            display: "none"
+            display: "none",
+            textAlign: "center",
+            position: "absolute",
+            width: "100%",
+            top: "16px",
+            left: 0
         },
         "&:hover": {
             "& .hover-show": {
                 opacity: 1,
-                textAlign: "center",
-                display: "block",
-                position: "absolute",
-                width: "100%",
-                top: "16px",
-                left: 0
+                display: "block"
             },
             "& .hover-hide": {
                 display: "none"
