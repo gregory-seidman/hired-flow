@@ -1,13 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import { makeStyles } from 'tss-react/mui';
+import { Theme } from '@mui/material/styles';
 import ReduxState from "../state/ReduxState";
 import { Job, JobSearchClient } from "../models";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
@@ -73,7 +74,7 @@ const mapStateAndProps: Mapper = (state, props) => {
     };
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
     fieldset: {
         padding: theme.spacing(),
         borderRadius: theme.shape.borderRadius,
@@ -121,7 +122,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ closeDialog, disableCancel, 
             .then(() => dispatchSavedJob(saveJob));
         onClose();
     };
-    const classes = useStyles();
+    const { classes } = useStyles();
     return (
         <Dialog open={open} onClose={disableCancel ? undefined : onClose}>
             <DialogTitle>{job.id ? "Edit" : "New"} Job (all fields optional)</DialogTitle>
@@ -186,7 +187,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ closeDialog, disableCancel, 
                     margin="dense"
                     multiline
                     rows={4}
-                    rowsMax={1000}
+                    maxRows={1000}
                     label="Notes"
                     value={notes}
                     variant="outlined"
@@ -197,7 +198,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ closeDialog, disableCancel, 
                 <Button onClick={onClose} disabled={disableCancel} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={onSave} color="default">
+                <Button onClick={onSave} color="warning">
                     Save
                 </Button>
             </DialogActions>

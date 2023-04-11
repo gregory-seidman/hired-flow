@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { CellParams } from "@material-ui/data-grid";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from 'tss-react/mui';
+import { Theme } from '@mui/material/styles';
+import { CellParams } from "./tableModel";
+import CircularProgress from "@mui/material/CircularProgress";
 import ReduxState from "../state/ReduxState";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
 import { Job, JobSearchClient } from "../models";
@@ -17,7 +18,7 @@ interface MappedPropsType {
     status: JobStatus;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
     statusCell: {
         position: "relative",
         top: "calc(50% - 1ex)",
@@ -47,7 +48,7 @@ type OnSelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
 const ComponentFunc: React.FC<MappedPropsType> = ({ client, job, status }) => {
     const [ loading, setLoading ] = React.useState(false);
     const [ focused, setFocused ] = React.useState(false);
-    const classes = useStyles();
+    const { classes } = useStyles();
     if (!(job && client)) return <span>{status}</span>;
     const onChange = (evt: OnSelectChangeEvent) => {
         const newJob: Job = {

@@ -1,13 +1,14 @@
 import React from "react";
-import { CellParams, Columns, ColDef, RowModel, RowData, RowsProp } from "@material-ui/data-grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { makeStyles } from 'tss-react/mui';
+import { Theme } from '@mui/material/styles';
+import { CellParams, Columns, ColDef, RowModel, RowData, RowsProp } from "./tableModel";
 import orderBy, { Comparator, ItemKey } from "../utils/orderBy";
 
 export interface ColumnButtonDef {
@@ -26,7 +27,7 @@ interface InputPropsType {
 
 type MappedPropsType = InputPropsType;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
     hoverParent: {
         "& td": {
             position: "relative"
@@ -109,7 +110,7 @@ interface ColumnProps {
 }
 
 const ColumnHeader: React.FC<ColumnProps> = ({ column, sortColumns, setSortColumns }) => {
-    const classes = useStyles();
+    const { classes } = useStyles();
     if (!column.sortable) {
         return <TableCell>{column.headerName}</TableCell>;
     }
@@ -160,14 +161,14 @@ const BasicCellContent: React.FC<CellParamsPlusButtons> = ({ value, data, button
         <span className="hover-fade">{
             value
         }</span><span className="hover-show">{
-            buttons?.map((def, i) =>
+            buttons?.map((def, i: number) =>
                 <ColumnButton key={i} row={data} def={def} />)
         }</span>
     </React.Fragment>
 );
 
 const ComponentFunc: React.FC<MappedPropsType> = ({ rows, columns, buttons }) => {
-    const classes = useStyles();
+    const { classes } = useStyles();
     const [ sortColumns, setSortColumns ] = React.useState<SortColumns>([]);
     const sortedRows = sortBy(rows, sortColumns);
     const columnButtons = buttons?.reduce(
@@ -208,11 +209,10 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ rows, columns, buttons }) =>
                                 const params: CellParamsPlusButtons = {
                                     value: row[c.field],
                                     field: c.field,
-                                    getValue: f => row[f],
+                                    getValue: (f: string) => row[f],
                                     data: row,
                                     rowModel,
                                     colDef: c,
-                                    api: null,
                                     buttons: columnButtons[c.field]
                                 };
                                 const cellValue = (c.renderCell || BasicCellContent)(params);

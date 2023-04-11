@@ -1,5 +1,5 @@
 import React from "react";
-import { ColDef, CellParams } from "@material-ui/data-grid";
+import { ColDef, CellParams } from "./tableModel";
 import { Contact } from "../models";
 import textWidth from "../utils/textWidth";
 import StatusCell from "./StatusCell";

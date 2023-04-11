@@ -1,4 +1,4 @@
-import { RowData, CellValue } from "@material-ui/data-grid";
+import { RowData, CellValue } from "./tableModel";
 import { JobStatus, InteractionStatus } from "../enums";
 import { Job, Interaction } from "../models";
 import { columnDefs } from "./columnBuilder";
