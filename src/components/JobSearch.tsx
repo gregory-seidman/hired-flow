@@ -7,7 +7,6 @@ import { ColDef, RowData, RowsProp } from "./tableModel";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
-import List from "@mui/icons-material/List";
 import { Job, JobSearch } from "../models";
 import rowBuilder from "./rowBuilder";
 import columnBuilder from "./columnBuilder";
@@ -58,11 +57,6 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
         setCreatingNew(false);
     }
     const buttons: ColumnButtonDefs = [
-        {
-            field: "_lastInteractionDate",
-            button: <List />,
-            onClick: (row: RowData) => {} //TODO
-        },
         {
             field: "_nextInteractionDate",
             button: <AddIcon />,
