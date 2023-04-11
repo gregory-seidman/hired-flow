@@ -53,7 +53,7 @@ export const columnDefs: { [fieldName: string]: ColDef } = {
     },
     "_nextInteractionDate": {
         field: "_nextInteractionDate",
-        headerName: "Expected Contact",
+        headerName: "Next Contact",
         sortable: true,
         type: "date"
     }

@@ -24,7 +24,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     gridWrapper: {
         height: "calc(100vh - 25ex)",
         minHeight: "calc(100vh - 25ex)",
-        overflowX: "scroll"
+        overflowX: "auto"
     },
     fab: {
         position: "absolute",
