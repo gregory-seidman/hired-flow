@@ -2,7 +2,7 @@ import React from "react";
 import { ColDef, CellParams } from "./tableModel";
 import { Contact } from "../models";
 import textWidth from "../utils/textWidth";
-import StatusCell from "./StatusCell";
+import JobStatusCell from "./JobStatusCell";
 import InteractionsCell from "./InteractionsCell";
 
 const ContactCell: React.FC<Contact> =
@@ -41,7 +41,7 @@ export const columnDefs: { [fieldName: string]: ColDef } = {
     "status": {
         field: "status",
         headerName: "Status",
-        renderCell: (params: CellParams) => <StatusCell {...params} />,
+        renderCell: (params: CellParams) => <JobStatusCell {...params} />,
         sortable: true
     },
     "_lastInteractionDate": {
