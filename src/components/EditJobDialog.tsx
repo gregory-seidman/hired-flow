@@ -5,10 +5,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import { makeStyles } from 'tss-react/mui';
-import { Theme } from '@mui/material/styles';
 import ReduxState from "../state/ReduxState";
 import { Job, JobSearchClient } from "../models";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
@@ -83,7 +79,6 @@ const jobFields: JobFieldDefMap = {
 }
 
 const JobForm = FormFragment<Job>;
-const DetailsForm = FormFragment<DetailsType>;
 
 type Mapper = (state: ReduxState, props: InputPropsType) => MappedPropsType;
 
