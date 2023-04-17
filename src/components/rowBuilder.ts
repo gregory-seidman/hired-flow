@@ -1,4 +1,4 @@
-import { RowData, CellValue } from "./tableModel";
+import { RowData, CellValue } from "./generic/tableModel";
 import { JobStatus, InteractionStatus } from "../enums";
 import { Job, Interaction } from "../models";
 import { columnDefs } from "./columnBuilder";

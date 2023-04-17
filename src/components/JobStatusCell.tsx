@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CellParams } from "./tableModel";
+import { CellParams } from "./generic/tableModel";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReduxState from "../state/ReduxState";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
 import { Job, JobSearchClient } from "../models";
 import { JobStatus } from "../enums";
-import EnumEditCell from "./EnumEditCell"
+import EnumEditCell from "./generic/EnumEditCell"
 
 type InputPropsType = CellParams;
 

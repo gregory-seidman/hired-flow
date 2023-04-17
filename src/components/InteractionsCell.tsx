@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@mui/material";
 import List from "@mui/icons-material/List";
-import { CellParams } from "./tableModel";
+import { CellParams } from "./generic/tableModel";
 import { Interaction, JobSearchClient } from "../models";
 import ReduxState from "../state/ReduxState";
 import InteractionsTable from "./InteractionsTable";

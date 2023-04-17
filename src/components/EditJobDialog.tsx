@@ -8,8 +8,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ReduxState from "../state/ReduxState";
 import { Job, JobSearchClient } from "../models";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
-import FormFragment from "./FormFragment";
-import { CustomFieldDef, FieldDef, FieldType } from "./formModel";
+import FormFragment from "./generic/FormFragment";
+import { CustomFieldDef, FieldDef, FieldType } from "./generic/formModel";
 import { columnDefs } from "./columnBuilder";
 
 interface InputPropsType {

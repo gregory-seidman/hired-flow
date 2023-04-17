@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import ReduxState from "../state/ReduxState";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
-import { ColDef, RowData, RowsProp } from "./tableModel";
+import { ColDef, RowData, RowsProp } from "./generic/tableModel";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
 import { Job, JobSearch } from "../models";
 import rowBuilder from "./rowBuilder";
 import columnBuilder from "./columnBuilder";
-import TableGrid, { ColumnButtonDefs } from "./TableGrid";
+import TableGrid, { ColumnButtonDefs } from "./generic/TableGrid";
 import EditJobDialog from "./EditJobDialog";
 
 interface InputPropsType {

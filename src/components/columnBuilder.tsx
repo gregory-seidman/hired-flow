@@ -1,5 +1,5 @@
 import React from "react";
-import { ColDef, CellParams } from "./tableModel";
+import { ColDef, CellParams } from "./generic/tableModel";
 import { Contact } from "../models";
 import textWidth from "../utils/textWidth";
 import JobStatusCell from "./JobStatusCell";

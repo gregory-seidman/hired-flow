@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { CellParams, Columns, ColDef, RowModel, RowData, RowsProp } from "./tableModel";
-import orderBy, { Comparator, ItemKey } from "../utils/orderBy";
+import orderBy, { Comparator, ItemKey } from "../../utils/orderBy";
 
 export interface ColumnButtonDef {
     field: string;

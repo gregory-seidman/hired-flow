@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
-import { JobStatus, InteractionStatus } from "../enums";
-import textWidth from "../utils/textWidth";
+import { JobStatus, InteractionStatus } from "../../enums";
+import textWidth from "../../utils/textWidth";
 
 type SupportedEnums = JobStatus | InteractionStatus;
 

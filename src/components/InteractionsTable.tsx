@@ -1,8 +1,8 @@
 import React from "react";
-import { Columns, RowData } from "./tableModel";
+import { Columns, RowData } from "./generic/tableModel";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
-import TableGrid, { ColumnButtonDefs } from "./TableGrid";
+import TableGrid, { ColumnButtonDefs } from "./generic/TableGrid";
 import { Interaction } from "../models";
 
 interface InputPropsType {
