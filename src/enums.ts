@@ -32,3 +32,5 @@ export enum ActionType {
     ConfigSelected = "ConfigSelected",
     ConfigsLoaded = "ConfigsLoaded"
 }
+
+export type AnyEnum = JobStatus | EliminatedReason | InteractionStatus | ActionType;

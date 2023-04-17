@@ -1,10 +1,8 @@
 import React from "react";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
-import { JobStatus, InteractionStatus } from "../../enums";
+import { AnyEnum } from "../../enums";
 import textWidth from "../../utils/textWidth";
-
-type SupportedEnums = JobStatus | InteractionStatus;
 
 interface InputPropsType<T> {
     onChange: (newValue: T) => void;
@@ -26,7 +24,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 }));
 
 type OnSelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
-function ComponentFunc<T extends SupportedEnums>(props: InputPropsType<T>): React.ReactElement {
+function ComponentFunc<T extends AnyEnum>(props: InputPropsType<T>): React.ReactElement {
     const [ focused, setFocused ] = React.useState(false);
     const { classes } = useStyles();
     const { onChange, options, value } = props;

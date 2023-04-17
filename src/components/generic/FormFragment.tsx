@@ -3,7 +3,8 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
-import { CustomFieldDef, FieldDef, FieldType } from "./formModel";
+import { CustomFieldDef, EnumFieldDef, FieldDef, FieldType } from "./formModel";
+import { AnyEnum } from "../../enums";
 
 interface InputPropsType<T> {
     model: T;
@@ -63,6 +64,20 @@ function ComponentFunc<T>(props: InputPropsType<T>): React.ReactElement {
                                     { f.label && <FormControl component="legend">{f.label}</FormControl> }
                                     <NestedFormFragment model={value} fields={custom.nestedFields!} onChange={v => onChangeField(f.field, v)} />
                                 </FormControl>
+                            );
+                        case FieldType.EnumField:
+                            type EnumType = typeof value extends AnyEnum ? typeof value : AnyEnum;
+                            const enumDef = f as EnumFieldDef<T, EnumType>;
+                            return (
+                                <select
+                                    onChange={evt => onChangeField(f.field, evt.target.value)}
+                                    value={value as string}>
+                                { Object.entries(enumDef.enumValues).map((entry) => {
+                                    const k = entry[0] as EnumType;
+                                    const v = entry[1] as string;
+                                    return <option key={k} value={k}>{v}</option>
+                                })}
+                                </select>
                             );
                         case FieldType.StringField:
                             return (

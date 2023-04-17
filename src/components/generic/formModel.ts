@@ -1,4 +1,5 @@
 import { TextFieldProps } from "@mui/material";
+import { AnyEnum as StringEnums } from "../../enums";
 
 export enum FieldType {
     Nested = "nested",
@@ -6,6 +7,7 @@ export enum FieldType {
     GroupedNested = "grouped_nested",
     Custom = "custom",
     StringField = "string",
+    EnumField = "enum",
     //DateField = "date",
     //DateTimeField = "datetime",
 }
@@ -24,4 +26,8 @@ export interface CustomFieldDef<T, V> extends FieldDef<T> {
     render?: (value: V, onChange: (value: V) => void) => React.ReactElement;
     // only valid if type is Nested or GroupedNested
     nestedFields?: FieldDef<V>[];
+}
+
+export interface EnumFieldDef<T, E extends StringEnums> extends FieldDef<T> {
+    enumValues: { [key in E]: string };
 }
