@@ -3,10 +3,13 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { CustomFieldDef, EnumFieldDef, FieldDef, FieldType } from "./formModel";
 import { AnyEnum } from "../../enums";
 import FieldSet from "./FieldSet";
 import FormFragment from "./FormFragment";
+import { Datestamp } from "../../utils/Datestamp";
+import { InputLabel } from "@mui/material";
 
 function onChangeForField<T, V>(field: keyof T, model: T, onChange: (newModel: T) => void): (value: V) => void {
     return (value: any) => {
@@ -103,11 +106,14 @@ function renderEnum<T>(props: RenderFieldProps<T>): React.ReactElement {
     const onChangeField = onChangeForField<T, V>(field.field, model, onChange);
     type EnumType = V extends AnyEnum ? V : AnyEnum;
     const enumDef = field as EnumFieldDef<T, EnumType>;
+    const labelId = `label-${field.field.toString()}`;
     return (
         <FormControl fullWidth>
+            <InputLabel id={labelId}>{field.label}</InputLabel>
             <Select
-                onChange={evt => onChangeField(evt.target.value as V)}
                 label={field.label}
+                labelId={labelId}
+                onChange={evt => onChangeField(evt.target.value as V)}
                 value={value as string}>
             { Object.entries(enumDef.enumValues).map((entry) => {
                 const k = entry[0] as EnumType;
@@ -119,6 +125,21 @@ function renderEnum<T>(props: RenderFieldProps<T>): React.ReactElement {
     );
 }
 
+function renderDate<T>(props: RenderFieldProps<T>): React.ReactElement {
+    const { model, field, onChange } = props;
+    const value: Datestamp = model[field.field] as Datestamp;
+    type V = Datestamp;
+    const onChangeField = onChangeForField<T, V>(field.field, model, onChange);
+    return (
+        <FormControl style={{ marginTop: "5px", marginBottom: "10px" }} fullWidth>
+            <DatePicker
+                onChange={v => onChangeField(v!)}
+                label={field.label}
+                value={value} />
+        </FormControl>
+    );
+}
+
 const fieldsByType: {[key in FieldType]: RenderField<any>} = {
     [FieldType.Nested]: renderNested<any>,
     [FieldType.Grouped]: renderGrouped<any>,
@@ -126,7 +147,7 @@ const fieldsByType: {[key in FieldType]: RenderField<any>} = {
     [FieldType.Custom]: renderCustom<any>,
     [FieldType.StringField]: renderString<any>,
     [FieldType.EnumField]: renderEnum<any>,
-    //[FieldType.DateField]: renderDate<any>,
+    [FieldType.DateField]: renderDate<any>,
     //[FieldType.DateTimeField]: renderDateTime<any>,
 }
 

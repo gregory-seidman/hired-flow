@@ -8,7 +8,7 @@ export enum FieldType {
     Custom = "custom",
     StringField = "string",
     EnumField = "enum",
-    //DateField = "date",
+    DateField = "date",
     //DateTimeField = "datetime",
 }
 
