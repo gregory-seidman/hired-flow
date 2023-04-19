@@ -6,21 +6,21 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReduxState from "../state/ReduxState";
-import { Interaction, InteractionsById, Job, JobSearchClient } from "../models";
+import { Interaction, Job, JobSearchClient } from "../models";
 import InteractionsTable from "./InteractionsTable";
 import { dispatchSavedJob } from "../state/dispatchers/dataDispatchers";
 
 interface InputPropsType {
     open: boolean;
     job?: Job|undefined;
-    onClose: () => void;
+    closeDialog: () => void;
 }
 
 interface MappedPropsType {
     open: boolean;
     job?: Job|undefined;
     client: JobSearchClient;
-    onClose: () => void;
+    closeDialog: () => void;
 }
 
 type Mapper = (state: ReduxState, props: InputPropsType) => MappedPropsType;
@@ -32,7 +32,7 @@ const mapStateAndProps: Mapper = (state, props) => {
     };
 }
 
-const ComponentFunc: React.FC<MappedPropsType> = ({ open, job, client, onClose }) => {
+const ComponentFunc: React.FC<MappedPropsType> = ({ open, job, client, closeDialog }) => {
     const [ interactions, setInteractions ] = React.useState(job?.interactions || {});
     if (!job) return null;
     const onSave = () => {
@@ -42,7 +42,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ open, job, client, onClose }
         };
         client.saveJob(saveJob)
             .then(() => dispatchSavedJob(saveJob));
-        onClose();
+        closeDialog();
     };
     const onAdd = (interaction: Interaction) => {
         setInteractions({
@@ -59,13 +59,13 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ open, job, client, onClose }
         //TODO
     };
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={closeDialog}>
             <DialogTitle>Interactions with {job.company || "job"}</DialogTitle>
             <DialogContent>
                 <InteractionsTable onClickEdit={onEdit} onClickDelete={onDelete} interactions={Object.values(interactions)} />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">
+                <Button onClick={closeDialog} color="primary">
                     Cancel
                 </Button>
                 <Button onClick={onSave} color="warning">
