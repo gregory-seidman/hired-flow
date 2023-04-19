@@ -1,4 +1,6 @@
-export type Datestamp = Date;
+import dayjs, { Dayjs, OpUnitType } from "dayjs";
+
+export type Datestamp = Dayjs;
 
 export const iso8601regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 
@@ -6,7 +8,7 @@ export function fromIso8601(iso8601: string): Datestamp {
     if (!iso8601regex.test(iso8601)) {
         throw new Error("invalid ISO 8601 format");
     }
-    return new Date(iso8601);
+    return dayjs(iso8601);
 }
 
 export function compareDatestamps(aDate: Datestamp, bDate: Datestamp): number {
@@ -14,30 +16,14 @@ export function compareDatestamps(aDate: Datestamp, bDate: Datestamp): number {
         ((aDate < bDate) ? -1 : 1);
 }
 
-export const endOfTime: Datestamp = new Date(9999, 12);
-export const startOfTime: Datestamp = new Date(0, 1);
-
-function pastMidnightMillis(date: Date): number {
-    return (
-        date.getMilliseconds() + 1000 * (
-            date.getSeconds() + 60 * (
-                date.getMinutes() + 60 * (
-                    date.getHours()
-                )
-            )
-        )
-    );
-}
+export const endOfTime: Datestamp = dayjs(new Date(9999, 12));
+export const startOfTime: Datestamp = dayjs(new Date(0, 1));
 
 export function today(): Datestamp {
-    const now: Date = new Date();
-    const pastMidnight: number = pastMidnightMillis(now);
-    return new Date(now.valueOf() - (pastMidnight - 1));
+    return dayjs().startOf('day');
 }
 
 export function justYesterday(): Datestamp {
-    const now: Date = new Date();
-    const pastMidnight: number = pastMidnightMillis(now);
-    return new Date(now.valueOf() - (pastMidnight + 1));
+    return today().subtract(1, "ms");
 }
 
