@@ -14,6 +14,7 @@ import rowBuilder from "./rowBuilder";
 import columnBuilder from "./columnBuilder";
 import TableGrid, { ColumnButtonDefs } from "./generic/TableGrid";
 import EditJobDialog from "./EditJobDialog";
+import EditInteractionDialog from "./EditInteractionDialog";
 
 interface InputPropsType {
 }
@@ -48,26 +49,31 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
     const { fieldNames, fieldOrder, jobs } = jobSearch;
     const jobsList: Job[] = Object.values(jobs);
     const [ curJobId, setCurJobId_ ] = React.useState("");
+    const [ addInteraction, setAddInteraction ] = React.useState(false);
     const [ creatingNew, setCreatingNew ] = React.useState(false);
     const currentJob: Job|undefined = jobs[curJobId];
-    const openEdit: boolean = !!(creatingNew || curJobId || (jobsList.length === 0));
+    const openEdit: boolean = !addInteraction && !!(creatingNew || curJobId || (jobsList.length === 0));
     const { classes } = useStyles();
     const columns: ColDef[] = fieldOrder.map(columnBuilder(fieldNames));
     const rows: RowsProp = jobsList.map(rowBuilder(fieldOrder));
     const setCurJobId = (id: string) => {
         setCurJobId_(id);
         setCreatingNew(false);
+        setAddInteraction(false);
     }
     const buttons: ColumnButtonDefs = [
         {
             field: "_nextInteractionDate",
             button: <AddIcon />,
-            onClick: (row: RowData) => {} //TODO
+            onClick: (row: RowData) => {
+                setCurJobId(row.id.toString());
+                setAddInteraction(true);
+            }
         },
         {
             field: "company",
             button: <Edit />,
-            onClick: (row: RowData) => { setCurJobId(row.id.toString())}
+            onClick: (row: RowData) => setCurJobId(row.id.toString())
         }
     ];
     const closeDialog = () => setCurJobId("");
@@ -89,6 +95,13 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
                     <AddIcon />
                 </Fab>
             </div>
+            { addInteraction ? (
+            <EditInteractionDialog
+                job={currentJob}
+                open={addInteraction}
+                closeDialog={closeDialog}
+            />
+            ) : null }
             { openEdit ? (
             <EditJobDialog
                 job={currentJob}
