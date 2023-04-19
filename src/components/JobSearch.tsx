@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import ReduxState from "../state/ReduxState";
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ColDef, RowData, RowsProp } from "./generic/tableModel";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -71,7 +73,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
     const closeDialog = () => setCurJobId("");
 
     return (
-        <React.Fragment>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className={classes.gridWrapper}>
                 <TableGrid
                     rows={rows}
@@ -95,7 +97,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ jobSearch }) => {
                 closeDialog={closeDialog}
             />
             ) : null }
-        </React.Fragment>
+        </LocalizationProvider>
     );
 }
 
