@@ -29,5 +29,5 @@ export interface CustomFieldDef<T, V> extends FieldDef<T> {
 }
 
 export interface EnumFieldDef<T, E extends StringEnums> extends FieldDef<T> {
-    enumValues: { [key in E]: string };
+    enumValues: { [key: string]: E };
 }
