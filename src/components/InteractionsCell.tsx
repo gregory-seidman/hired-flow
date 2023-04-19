@@ -7,12 +7,14 @@ import { CellParams } from "./generic/tableModel";
 import { Interaction, JobSearchClient } from "../models";
 import ReduxState from "../state/ReduxState";
 import InteractionsTable from "./InteractionsTable";
+import formatValue from "./generic/formatValue";
+import { Datestamp } from "../utils/Datestamp";
 
 type InputPropsType = CellParams;
 
 interface MappedPropsType {
     client: JobSearchClient;
-    value: Date | undefined;
+    value: Datestamp | undefined;
     interactions: Interaction[];
 }
 
@@ -24,7 +26,7 @@ const mapStateAndProps: Mapper = (state, props) => {
     const job = jobSearch?.jobs[id];
     const interactions = Object.values(job?.interactions || {});
     return {
-        value: props.value,
+        value: interactions[0]?.date,
         interactions,
         client: client!
     };
@@ -36,7 +38,7 @@ const ComponentFunc: React.FC<MappedPropsType> = ({ value, interactions, client 
     if (!interactions.length) return null;
     return loading ? <CircularProgress /> : (
         <div>
-                <span>{value?.toString()}</span>
+                <span>{formatValue(value)}</span>
                 <Button style={{ textAlign: "left", position: "relative" }} className="hover-show" onClick={() => setExpanded(!expanded)}><List /></Button>
                 <div style={{ display: expanded ? "block" : "none" }}>
                     <InteractionsTable interactions={interactions} />

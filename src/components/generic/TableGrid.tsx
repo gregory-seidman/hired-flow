@@ -10,6 +10,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { CellParams, Columns, ColDef, RowModel, RowData, RowsProp } from "./tableModel";
 import orderBy, { Comparator, ItemKey } from "../../utils/orderBy";
+import formatValue from "./formatValue";
 
 export interface ColumnButtonDef {
     field: string;
@@ -159,7 +160,7 @@ type CellParamsPlusButtons = CellParams & {
 const BasicCellContent: React.FC<CellParamsPlusButtons> = ({ value, data, buttons }) => (
     <React.Fragment>
         <span className="hover-fade">{
-            value
+            formatValue(value)
         }</span><span className="hover-show">{
             buttons?.map((def, i: number) =>
                 <ColumnButton key={i} row={data} def={def} />)
